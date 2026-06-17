@@ -24,6 +24,11 @@
       line-height: 1.65;
       min-height: 100vh;
       padding-bottom: 160px;
+      display: flex;
+      flex-direction: column;
+    }
+    #app {
+      flex: 1;
     }
 
     /* Header */
@@ -301,13 +306,14 @@
 
     /* Footer */
     footer {
-      background: #2D4A3E;
-      color: rgba(250,247,242,0.7);
       text-align: center;
-      padding: 20px;
-      font-size: 13px;
+      padding: 14px 20px;
     }
-    footer a { color: rgba(250,247,242,0.8); }
+    footer a {
+      font-size: 11px;
+      color: rgba(28,28,30,0.3);
+      text-decoration: none;
+    }
   </style>
 </head>
 <body>
@@ -338,6 +344,10 @@
     </div>
     <a href="/privacy" style="display:block;text-align:center;margin-top:10px;font-size:11px;color:rgba(250,247,242,0.4);text-decoration:none;">Privacy Policy</a>
   </div>
+
+  <footer>
+    <a href="/privacy">Privacy Policy</a>
+  </footer>
 
   <script>
     const SUPABASE_URL = 'https://kcwntjuprqdsfqlioeiz.supabase.co';
