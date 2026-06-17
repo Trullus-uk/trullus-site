@@ -78,20 +78,17 @@
       display: flex;
       gap: 12px;
       justify-content: center;
+      align-items: center;
       flex-wrap: wrap;
     }
     .store-btn {
-      background: #C4622D;
-      color: #FAF7F2;
-      border-radius: 14px;
-      padding: 14px 24px;
-      font-weight: 600;
-      font-size: 15px;
-      text-decoration: none;
-      cursor: default;
       display: inline-block;
-      min-width: 130px;
-      text-align: center;
+      cursor: default;
+      line-height: 0;
+    }
+    .store-btn img {
+      height: 44px;
+      display: block;
     }
 
     .spinner {
@@ -181,7 +178,6 @@
 
     function renderNonMobile() {
       document.getElementById('card').innerHTML = `
-        <div class="icon">📱</div>
         <div class="card-title">Open this on your phone</div>
         <p class="card-body">
           This link needs to be opened on your mobile device.<br>
