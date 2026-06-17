@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trullus</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #FAF7F2;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+      color: #1C1C1E;
+      font-size: 16px;
+      line-height: 1.65;
+      min-height: 100vh;
+      padding-bottom: 160px;
+    }
+
+    /* Header */
+    header {
+      background: #2D4A3E;
+      padding: 20px 24px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    .wordmark {
+      font-family: 'Playfair Display', serif;
+      color: #FAF7F2;
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    /* Content container */
+    .content {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 28px 20px;
+    }
+    @media (min-width: 600px) {
+      .content { padding: 40px; }
+    }
+
+    /* Profile section */
+    .profile-header {
+      text-align: center;
+      padding: 32px 0 24px;
+    }
+    .avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 36px;
+      background: #E8DFD0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      font-weight: 700;
+      color: #2D4A3E;
+    }
+    .profile-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: #1C1C1E;
+      margin-bottom: 4px;
+    }
+    .profile-handle {
+      font-size: 14px;
+      color: #8A8580;
+    }
+    .stats-row {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin-top: 20px;
+    }
+    .stat { text-align: center; }
+    .stat-number { font-size: 22px; font-weight: 800; color: #1C1C1E; }
+    .stat-label { font-size: 12px; color: #8A8580; margin-top: 2px; }
+
+    /* Section */
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: #1C1C1E;
+      margin-bottom: 16px;
+    }
+
+    /* Location card */
+    .location-card {
+      background: #FFFFFF;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      padding: 18px 20px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      user-select: none;
+      transition: box-shadow 0.15s;
+    }
+    .location-card:hover { box-shadow: 0 4px 18px rgba(0,0,0,0.1); }
+    .location-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .location-info { flex: 1; }
+    .location-city {
+      font-weight: 700;
+      font-size: 16px;
+      color: #1C1C1E;
+    }
+    .location-country {
+      font-size: 13px;
+      color: #8A8580;
+      margin-top: 2px;
+    }
+    .location-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 4px;
+      margin-left: 12px;
+    }
+    .rec-count {
+      font-size: 12px;
+      color: #8A8580;
+      white-space: nowrap;
+    }
+    .expand-icon {
+      font-size: 13px;
+      color: #8A8580;
+      transition: transform 0.2s;
+    }
+    .location-card.open .expand-icon { transform: rotate(180deg); }
+
+    /* Recommendations panel */
+    .recs-panel {
+      display: none;
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid #E8DFD0;
+    }
+    .location-card.open .recs-panel { display: block; }
+
+    .rec-item {
+      padding: 12px 0;
+      border-bottom: 1px solid #F0EBE3;
+    }
+    .rec-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .rec-item:first-child { padding-top: 0; }
+
+    .category-pill {
+      display: inline-block;
+      border-radius: 20px;
+      padding: 3px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+    }
+    .rec-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: #1C1C1E;
+      margin-bottom: 4px;
+    }
+    .rec-note {
+      font-size: 13px;
+      color: #5A5550;
+      font-style: italic;
+      line-height: 1.5;
+      border-left: 3px solid #E8DFD0;
+      padding-left: 10px;
+      margin-top: 6px;
+    }
+    .no-recs {
+      font-size: 14px;
+      color: #8A8580;
+      font-style: italic;
+    }
+
+    /* Location note */
+    .location-note {
+      font-size: 13px;
+      color: #5A5550;
+      font-style: italic;
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+
+    /* State messages */
+    .state-container {
+      text-align: center;
+      padding: 64px 24px 32px;
+    }
+    .state-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      font-weight: 700;
+      color: #1C1C1E;
+      margin-bottom: 12px;
+    }
+    .state-body {
+      font-size: 15px;
+      color: #8A8580;
+      line-height: 1.65;
+      margin-bottom: 28px;
+      max-width: 360px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .store-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .store-btn {
+      background: #C4622D;
+      color: #FAF7F2;
+      border-radius: 14px;
+      padding: 14px 28px;
+      font-weight: 600;
+      font-size: 15px;
+      text-decoration: none;
+      cursor: default;
+      display: inline-block;
+      min-width: 140px;
+      text-align: center;
+    }
+
+    /* Loading */
+    .loading-container {
+      text-align: center;
+      padding: 80px 24px;
+      color: #8A8580;
+      font-size: 15px;
+    }
+
+    /* Sticky CTA */
+    .sticky-cta {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #2D4A3E;
+      color: #FAF7F2;
+      padding: 16px 20px 20px;
+      z-index: 100;
+    }
+    .sticky-cta-text {
+      font-size: 13px;
+      line-height: 1.5;
+      color: rgba(250,247,242,0.9);
+      margin-bottom: 12px;
+    }
+    .sticky-cta-buttons {
+      display: flex;
+      gap: 10px;
+    }
+    .sticky-store-btn {
+      background: #C4622D;
+      color: #FAF7F2;
+      border-radius: 10px;
+      padding: 10px 0;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      flex: 1;
+      text-align: center;
+      cursor: default;
+      display: block;
+    }
+    @media (min-width: 600px) {
+      .sticky-cta { padding: 16px 24px 20px; }
+      .sticky-cta-buttons { max-width: 360px; }
+    }
+
+    /* Footer */
+    footer {
+      background: #2D4A3E;
+      color: rgba(250,247,242,0.7);
+      text-align: center;
+      padding: 20px;
+      font-size: 13px;
+    }
+    footer a { color: rgba(250,247,242,0.8); }
+  </style>
+</head>
+<body>
+
+  <header>
+    <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <polygon points="50,8 95,88 5,88" fill="#2D4A3E"/>
+      <polygon points="50,14 89,84 11,84" fill="#C4622D"/>
+      <rect x="11" y="78" width="78" height="8" rx="2" fill="#FAF7F2"/>
+      <ellipse cx="35" cy="52" rx="6" ry="8" fill="#1C1C1E"/>
+      <ellipse cx="50" cy="48" rx="6" ry="8" fill="#1C1C1E"/>
+      <ellipse cx="65" cy="52" rx="6" ry="8" fill="#1C1C1E"/>
+      <ellipse cx="42" cy="67" rx="5.5" ry="7.5" fill="#1C1C1E"/>
+      <ellipse cx="58" cy="67" rx="5.5" ry="7.5" fill="#1C1C1E"/>
+    </svg>
+    <div class="wordmark">Trullus</div>
+  </header>
+
+  <main id="app">
+    <div class="loading-container" id="loading-state">
+      <p>Loading…</p>
+    </div>
+  </main>
+
+  <!-- Sticky download CTA — shown once a valid profile is loaded -->
+  <div class="sticky-cta" id="sticky-cta" style="display:none">
+    <p class="sticky-cta-text" id="cta-text">
+      Trullus is available on iOS and Android. This link expires in 24 hours — download the app now to connect with friends.
+    </p>
+    <div class="sticky-cta-buttons">
+      <!-- TODO: Replace with real App Store URL before public release -->
+      <a class="sticky-store-btn" onclick="return false">App Store</a>
+      <!-- TODO: Replace with real Google Play URL before public release -->
+      <a class="sticky-store-btn" onclick="return false">Google Play</a>
+    </div>
+  </div>
+
+  <footer>
+    <a href="/privacy">Privacy Policy</a>
+  </footer>
+
+  <script>
+    const SUPABASE_URL = 'https://kcwntjuprqdsfqlioeiz.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtjd250anVwcnFkc2ZxbGlvZWl6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAzNDU3MDEsImV4cCI6MjA5NTkyMTcwMX0.4iGVxZpFGgC7GR35100jwMdEMM8JLM872SoFfKcJMMM';
+
+    const CATEGORY_META = {
+      eat:      { label: 'Eat',      icon: '🍽', color: '#C4622D' },
+      cafe_bar: { label: 'Cafe/Bar', icon: '🍷', color: '#D4A853' },
+      explore:  { label: 'Explore',  icon: '🔭', color: '#2D7A4A' },
+      do:       { label: 'Do',       icon: '🏃', color: '#2D4A3E' },
+      stay:     { label: 'Stay',     icon: '🏨', color: '#6B5B8E' },
+      party:    { label: 'Party',    icon: '🎉', color: '#9B3A8C' },
+    };
+
+    function isMobilePhone() {
+      // Match Android phones (has "Mobile" in UA) and iPhones (not iPads, which say "iPad")
+      return /Android.*Mobile|iPhone/.test(navigator.userAgent);
+    }
+
+    async function dbGet(table, queryString) {
+      const res = await fetch(
+        `${SUPABASE_URL}/rest/v1/${table}?${queryString}`,
+        {
+          headers: {
+            'apikey': SUPABASE_ANON_KEY,
+            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+            'Accept': 'application/json',
+          },
+        }
+      );
+      if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+      return res.json();
+    }
+
+    function getInitials(firstName, lastName) {
+      return ((firstName || '').charAt(0) + (lastName || '').charAt(0)).toUpperCase();
+    }
+
+    function escapeHtml(str) {
+      return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function renderExpired() {
+      document.getElementById('app').innerHTML = `
+        <div class="state-container">
+          <div class="state-title">This link has expired.</div>
+          <p class="state-body">
+            Want to see recommendations from people you trust?<br>
+            Download Trullus and connect with friends.
+          </p>
+          <div class="store-buttons">
+            <!-- TODO: Replace with real App Store URL before public release -->
+            <a class="store-btn" onclick="return false">App Store</a>
+            <!-- TODO: Replace with real Google Play URL before public release -->
+            <a class="store-btn" onclick="return false">Google Play</a>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderNotFound() {
+      document.getElementById('app').innerHTML = `
+        <div class="state-container">
+          <div class="state-title">This profile couldn't be found.</div>
+          <p class="state-body">
+            The link you followed doesn't match any profile on Trullus.
+          </p>
+        </div>
+      `;
+    }
+
+    function renderProfile(profile, locations, recsByLocation) {
+      const totalRecs = locations.reduce((sum, loc) => sum + (recsByLocation[loc.id] || []).length, 0);
+      const initials = getInitials(profile.first_name, profile.last_name);
+
+      const locationCards = locations.map(loc => {
+        const recs = recsByLocation[loc.id] || [];
+        const recCount = recs.length;
+        const countLabel = recCount === 1 ? '1 rec' : `${recCount} recs`;
+
+        const recsHtml = recs.length === 0
+          ? `<p class="no-recs">No recommendations yet.</p>`
+          : recs.map(rec => {
+              const meta = CATEGORY_META[rec.category] || {};
+              const pillStyle = meta.color
+                ? `background:${meta.color}25;color:${meta.color}`
+                : 'background:#E8DFD0;color:#8A8580';
+              const noteHtml = rec.note
+                ? `<div class="rec-note">${escapeHtml(rec.note)}</div>`
+                : '';
+              return `
+                <div class="rec-item">
+                  <div class="category-pill" style="${pillStyle}">
+                    ${escapeHtml(meta.icon || '')} ${escapeHtml(meta.label || rec.category).toUpperCase()}
+                  </div>
+                  <div class="rec-name">${escapeHtml(rec.place_name)}</div>
+                  ${noteHtml}
+                </div>
+              `;
+            }).join('');
+
+        const noteHtml = loc.note
+          ? `<div class="location-note">${escapeHtml(loc.note)}</div>`
+          : '';
+
+        return `
+          <div class="location-card" onclick="toggleLocation(this)">
+            <div class="location-card-header">
+              <div class="location-info">
+                <div class="location-city">${escapeHtml(loc.city)}</div>
+                <div class="location-country">${escapeHtml(loc.country)}</div>
+              </div>
+              <div class="location-right">
+                <div class="rec-count">${countLabel}</div>
+                <div class="expand-icon">▼</div>
+              </div>
+            </div>
+            <div class="recs-panel">
+              ${noteHtml}
+              ${recsHtml}
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      const locationsSection = locations.length === 0
+        ? `<p style="color:#8A8580;font-style:italic">No locations saved yet.</p>`
+        : `
+          <div class="section-title">Locations</div>
+          ${locationCards}
+        `;
+
+      document.getElementById('app').innerHTML = `
+        <div class="content">
+          <div class="profile-header">
+            <div class="avatar">${escapeHtml(initials)}</div>
+            <div class="profile-name">${escapeHtml(profile.first_name)} ${escapeHtml(profile.last_name)}</div>
+            <div class="profile-handle">@${escapeHtml(profile.handle)}</div>
+            <div class="stats-row">
+              <div class="stat">
+                <div class="stat-number">${locations.length}</div>
+                <div class="stat-label">locations</div>
+              </div>
+              <div class="stat">
+                <div class="stat-number">${totalRecs}</div>
+                <div class="stat-label">recs</div>
+              </div>
+            </div>
+          </div>
+          ${locationsSection}
+        </div>
+      `;
+
+      // Update and show sticky CTA
+      document.getElementById('cta-text').textContent =
+        `Trullus is available on iOS and Android. This link expires in 24 hours — download the app now to save ${profile.first_name}'s recommendations and connect with friends.`;
+      document.getElementById('sticky-cta').style.display = 'block';
+    }
+
+    function toggleLocation(card) {
+      card.classList.toggle('open');
+    }
+
+    async function init() {
+      // Parse handle from URL path (e.g. /henry → "henry")
+      const pathParts = window.location.pathname.replace(/^\//, '').split('/');
+      const handle = pathParts[0];
+
+      // Ignore known site paths that should never reach 404.html
+      if (!handle || ['auth', 'privacy', 'index'].includes(handle)) {
+        renderNotFound();
+        return;
+      }
+
+      const token = new URLSearchParams(window.location.search).get('token');
+
+      if (!token) {
+        renderExpired();
+        return;
+      }
+
+      try {
+        // 1. Validate token
+        const links = await dbGet(
+          'share_links',
+          `token=eq.${encodeURIComponent(token)}&select=created_at,user_id&limit=1`
+        );
+
+        if (!links || links.length === 0) {
+          renderExpired();
+          return;
+        }
+
+        const link = links[0];
+        const ageHours = (Date.now() - new Date(link.created_at).getTime()) / 3600000;
+        if (ageHours > 24) {
+          renderExpired();
+          return;
+        }
+
+        // 2. Fetch profile by handle
+        const profiles = await dbGet(
+          'profiles',
+          `handle=eq.${encodeURIComponent(handle)}&select=id,first_name,last_name,handle&limit=1`
+        );
+
+        if (!profiles || profiles.length === 0) {
+          renderNotFound();
+          return;
+        }
+
+        const profile = profiles[0];
+
+        // Verify the token belongs to this profile
+        if (link.user_id !== profile.id) {
+          renderExpired();
+          return;
+        }
+
+        // 3. Attempt deep link on mobile phones before showing content
+        if (isMobilePhone()) {
+          window.location.href = `trullus://${encodeURIComponent(handle)}`;
+        }
+
+        // 4. Fetch locations
+        const locations = await dbGet(
+          'locations',
+          `user_id=eq.${encodeURIComponent(profile.id)}&select=id,city,country,note&order=display_order.asc.nullslast,created_at.desc`
+        );
+
+        const locList = locations || [];
+
+        // 5. Fetch recommendations for all locations
+        let recsByLocation = {};
+        if (locList.length > 0) {
+          const ids = locList.map(l => l.id).join(',');
+          const recs = await dbGet(
+            'recommendations',
+            `location_id=in.(${ids})&select=location_id,place_name,category,note&order=created_at.desc`
+          );
+          for (const rec of (recs || [])) {
+            if (!recsByLocation[rec.location_id]) recsByLocation[rec.location_id] = [];
+            recsByLocation[rec.location_id].push(rec);
+          }
+        }
+
+        renderProfile(profile, locList, recsByLocation);
+
+      } catch (err) {
+        console.error('Trullus load error:', err);
+        renderNotFound();
+      }
+    }
+
+    init();
+  </script>
+</body>
+</html>

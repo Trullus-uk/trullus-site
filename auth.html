@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trullus — Open in app</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #FAF7F2;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+      color: #1C1C1E;
+      font-size: 16px;
+      line-height: 1.65;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header */
+    header {
+      background: #2D4A3E;
+      padding: 20px 24px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    .wordmark {
+      font-family: 'Playfair Display', serif;
+      color: #FAF7F2;
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    /* Main content */
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px;
+    }
+    .card {
+      background: #FFFFFF;
+      border-radius: 20px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+      padding: 36px 28px;
+      max-width: 480px;
+      width: 100%;
+      text-align: center;
+    }
+    .icon {
+      font-size: 48px;
+      margin-bottom: 20px;
+    }
+    .card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: #1C1C1E;
+      margin-bottom: 12px;
+    }
+    .card-body {
+      font-size: 15px;
+      color: #8A8580;
+      line-height: 1.65;
+      margin-bottom: 28px;
+    }
+    .card-body strong { color: #1C1C1E; }
+
+    .store-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .store-btn {
+      background: #C4622D;
+      color: #FAF7F2;
+      border-radius: 14px;
+      padding: 14px 24px;
+      font-weight: 600;
+      font-size: 15px;
+      text-decoration: none;
+      cursor: default;
+      display: inline-block;
+      min-width: 130px;
+      text-align: center;
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 36px;
+      height: 36px;
+      border: 3px solid #E8DFD0;
+      border-top-color: #C4622D;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-bottom: 20px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .fallback-note {
+      margin-top: 20px;
+      font-size: 13px;
+      color: #8A8580;
+    }
+
+    /* Footer */
+    footer {
+      background: #2D4A3E;
+      color: rgba(250,247,242,0.7);
+      text-align: center;
+      padding: 20px;
+      font-size: 13px;
+    }
+    footer a { color: rgba(250,247,242,0.8); }
+  </style>
+</head>
+<body>
+
+  <header>
+    <svg width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <polygon points="50,8 95,88 5,88" fill="#2D4A3E"/>
+      <polygon points="50,14 89,84 11,84" fill="#C4622D"/>
+      <rect x="11" y="78" width="78" height="8" rx="2" fill="#FAF7F2"/>
+      <ellipse cx="35" cy="52" rx="6" ry="8" fill="#1C1C1E"/>
+      <ellipse cx="50" cy="48" rx="6" ry="8" fill="#1C1C1E"/>
+      <ellipse cx="65" cy="52" rx="6" ry="8" fill="#1C1C1E"/>
+      <ellipse cx="42" cy="67" rx="5.5" ry="7.5" fill="#1C1C1E"/>
+      <ellipse cx="58" cy="67" rx="5.5" ry="7.5" fill="#1C1C1E"/>
+    </svg>
+    <div class="wordmark">Trullus</div>
+  </header>
+
+  <main>
+    <!-- Content is injected by JS below -->
+    <div class="card" id="card">
+      <div class="spinner"></div>
+      <div class="card-title">Opening Trullus…</div>
+      <div class="card-body">Please wait.</div>
+    </div>
+  </main>
+
+  <footer>
+    <a href="/privacy">Privacy Policy</a>
+  </footer>
+
+  <script>
+    function isMobilePhone() {
+      // Match Android phones (UA contains "Android" AND "Mobile") and iPhones.
+      // Excludes iPads (UA says "iPad" not "iPhone") and Android tablets (no "Mobile").
+      return /Android.*Mobile|iPhone/.test(navigator.userAgent);
+    }
+
+    function renderMobileOpening(deepLink) {
+      document.getElementById('card').innerHTML = `
+        <div class="spinner"></div>
+        <div class="card-title">Opening Trullus…</div>
+        <p class="card-body">
+          If the app doesn't open automatically, make sure Trullus is installed.
+        </p>
+        <div class="store-buttons">
+          <!-- TODO: Replace with real App Store URL before public release -->
+          <a class="store-btn" onclick="return false">App Store</a>
+          <!-- TODO: Replace with real Google Play URL before public release -->
+          <a class="store-btn" onclick="return false">Google Play</a>
+        </div>
+        <p class="fallback-note">To complete this action, please install Trullus.</p>
+      `;
+
+      // Attempt to open the app. The browser will stay on this page if not installed.
+      window.location.href = deepLink;
+    }
+
+    function renderNonMobile() {
+      document.getElementById('card').innerHTML = `
+        <div class="icon">📱</div>
+        <div class="card-title">Open this on your phone</div>
+        <p class="card-body">
+          This link needs to be opened on your mobile device.<br>
+          <strong>Tap the link in your email on your phone</strong> to complete this action.
+        </p>
+        <p class="card-body" style="margin-bottom:20px">
+          Don't have Trullus? Download it to your phone:
+        </p>
+        <div class="store-buttons">
+          <!-- TODO: Replace with real App Store URL before public release -->
+          <a class="store-btn" onclick="return false">App Store</a>
+          <!-- TODO: Replace with real Google Play URL before public release -->
+          <a class="store-btn" onclick="return false">Google Play</a>
+        </div>
+      `;
+    }
+
+    function init() {
+      // Collect all params from the current URL — pass them through unchanged to the app.
+      // IMPORTANT: this page must never consume the auth token itself (it is one-time-use).
+      // The token is only consumed by the app's auth/callback or auth/reset-password route.
+      const incomingParams = new URLSearchParams(window.location.search);
+
+      // The 'mode' param is added by the app when constructing the redirectTo URL.
+      // mode=reset → password reset flow (routes to trullus://auth/reset-password)
+      // anything else → signup / email-change / verify flow (routes to trullus://auth/callback)
+      const mode = incomingParams.get('mode');
+
+      // Build the deep link params — forward everything except 'mode' (internal routing only)
+      const deepParams = new URLSearchParams();
+      for (const [key, value] of incomingParams.entries()) {
+        if (key !== 'mode') deepParams.set(key, value);
+      }
+
+      const deepPath = mode === 'reset' ? 'auth/reset-password' : 'auth/callback';
+      const paramStr = deepParams.toString();
+      const deepLink = `trullus://${deepPath}${paramStr ? '?' + paramStr : ''}`;
+
+      if (isMobilePhone()) {
+        renderMobileOpening(deepLink);
+      } else {
+        renderNonMobile();
+      }
+    }
+
+    init();
+  </script>
+</body>
+</html>
