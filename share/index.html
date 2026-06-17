@@ -399,17 +399,11 @@
         <div class="state-container">
           <div class="state-title">This link has expired.</div>
           <p class="state-body">
-            Want to see recommendations from people you trust?<br>
-            Download Trullus and connect with friends.
+            Public links expire after 24 hours. Download Trullus for uninterrupted access to friends recommendations!
           </p>
-          <div class="store-buttons">
-            <!-- TODO: Replace with real App Store URL before public release -->
-            <a class="store-btn" onclick="return false">App Store</a>
-            <!-- TODO: Replace with real Google Play URL before public release -->
-            <a class="store-btn" onclick="return false">Google Play</a>
-          </div>
         </div>
       `;
+      showStateCta();
     }
 
     function renderNotFound() {
@@ -421,6 +415,15 @@
           </p>
         </div>
       `;
+      showStateCta();
+    }
+
+    function showStateCta() {
+      document.getElementById('cta-headline').textContent =
+        'Join Trullus for free to connect with friends and share recommendations!';
+      document.getElementById('cta-subtext').textContent =
+        'Trullus is available on iOS and Android. This link expires in 24 hours.';
+      document.getElementById('sticky-cta').style.display = 'block';
     }
 
     function renderProfile(profile, locations, recsByLocation) {

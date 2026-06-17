@@ -270,27 +270,36 @@
       padding: 16px 20px 20px;
       z-index: 100;
     }
-    .sticky-cta-text {
-      font-size: 13px;
-      line-height: 1.5;
-      color: rgba(250,247,242,0.9);
+    .cta-headline {
+      font-size: 15px;
+      font-weight: 700;
+      color: #FAF7F2;
+      line-height: 1.4;
+      margin-bottom: 4px;
+    }
+    .cta-subtext {
+      font-size: 12px;
+      color: rgba(250,247,242,0.75);
+      line-height: 1.4;
       margin-bottom: 12px;
     }
     .sticky-cta-buttons {
       display: flex;
       gap: 10px;
+      justify-content: center;
+      align-items: center;
     }
     .sticky-store-btn {
-      background: #C4622D;
-      color: #FAF7F2;
-      border-radius: 10px;
-      padding: 10px 0;
-      font-size: 13px;
-      font-weight: 600;
-      text-decoration: none;
-      flex: 1;
-      text-align: center;
+      display: inline-block;
       cursor: default;
+      line-height: 0;
+    }
+    .sticky-store-btn img[alt="Download on the App Store"] {
+      height: 40px;
+      display: block;
+    }
+    .sticky-store-btn img[alt="Get it on Google Play"] {
+      height: 54px;
       display: block;
     }
     @media (min-width: 600px) {
@@ -332,17 +341,21 @@
     </div>
   </main>
 
-  <!-- Sticky download CTA — shown once a valid profile is loaded -->
+  <!-- Sticky download CTA -->
   <div class="sticky-cta" id="sticky-cta" style="display:none">
-    <p class="sticky-cta-text" id="cta-text">
-      Trullus is available on iOS and Android. This link expires in 24 hours — download the app now to connect with friends.
-    </p>
+    <p class="cta-headline" id="cta-headline"></p>
+    <p class="cta-subtext" id="cta-subtext"></p>
     <div class="sticky-cta-buttons">
-      <!-- TODO: Replace with real App Store URL before public release -->
-      <a class="sticky-store-btn" onclick="return false">App Store</a>
-      <!-- TODO: Replace with real Google Play URL before public release -->
-      <a class="sticky-store-btn" onclick="return false">Google Play</a>
+      <!-- TODO: Replace href with real App Store URL before public release -->
+      <a class="sticky-store-btn" onclick="return false">
+        <img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83" alt="Download on the App Store" />
+      </a>
+      <!-- TODO: Replace href with real Google Play URL before public release -->
+      <a class="sticky-store-btn" onclick="return false">
+        <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" />
+      </a>
     </div>
+    <a href="/privacy" style="display:block;text-align:center;margin-top:10px;font-size:11px;color:rgba(250,247,242,0.4);text-decoration:none;">Privacy Policy</a>
   </div>
 
   <footer>
@@ -399,17 +412,11 @@
         <div class="state-container">
           <div class="state-title">This link has expired.</div>
           <p class="state-body">
-            Want to see recommendations from people you trust?<br>
-            Download Trullus and connect with friends.
+            Public links expire after 24 hours. Download Trullus for uninterrupted access to friends recommendations!
           </p>
-          <div class="store-buttons">
-            <!-- TODO: Replace with real App Store URL before public release -->
-            <a class="store-btn" onclick="return false">App Store</a>
-            <!-- TODO: Replace with real Google Play URL before public release -->
-            <a class="store-btn" onclick="return false">Google Play</a>
-          </div>
         </div>
       `;
+      showStateCta();
     }
 
     function renderNotFound() {
@@ -421,6 +428,15 @@
           </p>
         </div>
       `;
+      showStateCta();
+    }
+
+    function showStateCta() {
+      document.getElementById('cta-headline').textContent =
+        'Join Trullus for free to connect with friends and share recommendations!';
+      document.getElementById('cta-subtext').textContent =
+        'Trullus is available on iOS and Android. This link expires in 24 hours.';
+      document.getElementById('sticky-cta').style.display = 'block';
     }
 
     function renderProfile(profile, locations, recsByLocation) {
@@ -506,8 +522,10 @@
       `;
 
       // Update and show sticky CTA
-      document.getElementById('cta-text').textContent =
-        `Trullus is available on iOS and Android. This link expires in 24 hours — download the app now to save ${profile.first_name}'s recommendations and connect with friends.`;
+      document.getElementById('cta-headline').textContent =
+        `Join Trullus for free to see ${profile.first_name}'s recommendations in full and connect with other friends!`;
+      document.getElementById('cta-subtext').textContent =
+        `Trullus is available on iOS and Android. This link expires in 24 hours.`;
       document.getElementById('sticky-cta').style.display = 'block';
     }
 
