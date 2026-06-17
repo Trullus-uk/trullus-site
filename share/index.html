@@ -274,18 +274,20 @@
     .sticky-cta-buttons {
       display: flex;
       gap: 10px;
+      justify-content: center;
+      align-items: center;
     }
     .sticky-store-btn {
-      background: #C4622D;
-      color: #FAF7F2;
-      border-radius: 10px;
-      padding: 10px 0;
-      font-size: 13px;
-      font-weight: 600;
-      text-decoration: none;
-      flex: 1;
-      text-align: center;
+      display: inline-block;
       cursor: default;
+      line-height: 0;
+    }
+    .sticky-store-btn img[alt="Download on the App Store"] {
+      height: 40px;
+      display: block;
+    }
+    .sticky-store-btn img[alt="Get it on Google Play"] {
+      height: 54px;
       display: block;
     }
     @media (min-width: 600px) {
@@ -332,10 +334,14 @@
       Trullus is available on iOS and Android. This link expires in 24 hours — download the app now to connect with friends.
     </p>
     <div class="sticky-cta-buttons">
-      <!-- TODO: Replace with real App Store URL before public release -->
-      <a class="sticky-store-btn" onclick="return false">App Store</a>
-      <!-- TODO: Replace with real Google Play URL before public release -->
-      <a class="sticky-store-btn" onclick="return false">Google Play</a>
+      <!-- TODO: Replace href with real App Store URL before public release -->
+      <a class="sticky-store-btn" onclick="return false">
+        <img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83" alt="Download on the App Store" />
+      </a>
+      <!-- TODO: Replace href with real Google Play URL before public release -->
+      <a class="sticky-store-btn" onclick="return false">
+        <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" />
+      </a>
     </div>
   </div>
 
