@@ -86,8 +86,12 @@
       cursor: default;
       line-height: 0;
     }
-    .store-btn img {
+    .store-btn img[alt="Download on the App Store"] {
       height: 44px;
+      display: block;
+    }
+    .store-btn img[alt="Get it on Google Play"] {
+      height: 60px;
       display: block;
     }
 
@@ -164,10 +168,14 @@
           If the app doesn't open automatically, make sure Trullus is installed.
         </p>
         <div class="store-buttons">
-          <!-- TODO: Replace with real App Store URL before public release -->
-          <a class="store-btn" onclick="return false">App Store</a>
-          <!-- TODO: Replace with real Google Play URL before public release -->
-          <a class="store-btn" onclick="return false">Google Play</a>
+          <!-- TODO: Replace href with real App Store URL before public release -->
+          <a class="store-btn" onclick="return false">
+            <img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83" alt="Download on the App Store" />
+          </a>
+          <!-- TODO: Replace href with real Google Play URL before public release -->
+          <a class="store-btn" onclick="return false">
+            <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" />
+          </a>
         </div>
         <p class="fallback-note">To complete this action, please install Trullus.</p>
       `;
@@ -187,10 +195,14 @@
           Don't have Trullus? Download it to your phone:
         </p>
         <div class="store-buttons">
-          <!-- TODO: Replace with real App Store URL before public release -->
-          <a class="store-btn" onclick="return false">App Store</a>
-          <!-- TODO: Replace with real Google Play URL before public release -->
-          <a class="store-btn" onclick="return false">Google Play</a>
+          <!-- TODO: Replace href with real App Store URL before public release -->
+          <a class="store-btn" onclick="return false">
+            <img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83" alt="Download on the App Store" />
+          </a>
+          <!-- TODO: Replace href with real Google Play URL before public release -->
+          <a class="store-btn" onclick="return false">
+            <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" />
+          </a>
         </div>
       `;
     }
