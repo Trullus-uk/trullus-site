@@ -265,10 +265,17 @@
       padding: 16px 20px 20px;
       z-index: 100;
     }
-    .sticky-cta-text {
-      font-size: 13px;
-      line-height: 1.5;
-      color: rgba(250,247,242,0.9);
+    .cta-headline {
+      font-size: 15px;
+      font-weight: 700;
+      color: #FAF7F2;
+      line-height: 1.4;
+      margin-bottom: 4px;
+    }
+    .cta-subtext {
+      font-size: 12px;
+      color: rgba(250,247,242,0.75);
+      line-height: 1.4;
       margin-bottom: 12px;
     }
     .sticky-cta-buttons {
@@ -330,9 +337,8 @@
 
   <!-- Sticky download CTA — shown once a valid profile is loaded -->
   <div class="sticky-cta" id="sticky-cta" style="display:none">
-    <p class="sticky-cta-text" id="cta-text">
-      Trullus is available on iOS and Android. This link expires in 24 hours — download the app now to connect with friends.
-    </p>
+    <p class="cta-headline" id="cta-headline"></p>
+    <p class="cta-subtext" id="cta-subtext"></p>
     <div class="sticky-cta-buttons">
       <!-- TODO: Replace href with real App Store URL before public release -->
       <a class="sticky-store-btn" onclick="return false">
@@ -506,8 +512,10 @@
       `;
 
       // Update and show sticky CTA
-      document.getElementById('cta-text').textContent =
-        `Trullus is available on iOS and Android. This link expires in 24 hours — download the app now to save ${profile.first_name}'s recommendations and connect with friends.`;
+      document.getElementById('cta-headline').textContent =
+        `Join Trullus for free to connect with ${profile.first_name} and share full recommendations!`;
+      document.getElementById('cta-subtext').textContent =
+        `Trullus is available on iOS and Android. This link expires in 24 hours.`;
       document.getElementById('sticky-cta').style.display = 'block';
     }
 
