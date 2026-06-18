@@ -113,6 +113,18 @@
       color: #8A8580;
     }
 
+    .open-app-btn {
+      display: inline-block;
+      background: #C4622D;
+      color: #FAF7F2;
+      border-radius: 14px;
+      padding: 14px 32px;
+      font-size: 16px;
+      font-weight: 700;
+      text-decoration: none;
+      margin-bottom: 8px;
+    }
+
     /* Footer */
     footer {
       background: #2D4A3E;
@@ -162,26 +174,21 @@
 
     function renderMobileOpening(deepLink) {
       document.getElementById('card').innerHTML = `
-        <div class="spinner"></div>
-        <div class="card-title">Opening Trullus…</div>
-        <p class="card-body">
-          If the app doesn't open automatically, make sure Trullus is installed.
+        <div class="card-title">Open in Trullus</div>
+        <p class="card-body">Tap the button below to complete this action in the app.</p>
+        <a href="${deepLink}" class="open-app-btn">Open in Trullus</a>
+        <p class="card-body" style="margin-top:28px;margin-bottom:12px">
+          Don't have Trullus yet?
         </p>
         <div class="store-buttons">
-          <!-- TODO: Replace href with real App Store URL before public release -->
           <a class="store-btn" onclick="return false">
             <img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83" alt="Download on the App Store" />
           </a>
-          <!-- TODO: Replace href with real Google Play URL before public release -->
           <a class="store-btn" onclick="return false">
             <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" />
           </a>
         </div>
-        <p class="fallback-note">To complete this action, please install Trullus.</p>
       `;
-
-      // Attempt to open the app. The browser will stay on this page if not installed.
-      window.location.href = deepLink;
     }
 
     function renderNonMobile() {
