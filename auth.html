@@ -173,9 +173,14 @@
     }
 
     function renderMobileOpening(deepLink) {
+      // Render content first — if the app isn't installed and the redirect fails,
+      // the user sees this page with the manual button and install links.
       document.getElementById('card').innerHTML = `
-        <div class="card-title">Open in Trullus</div>
-        <p class="card-body">Tap the button below to complete this action in the app.</p>
+        <div class="spinner"></div>
+        <div class="card-title">Opening Trullus…</div>
+        <p class="card-body">
+          If the app doesn't open automatically, tap the button below.
+        </p>
         <a href="${deepLink}" class="open-app-btn">Open in Trullus</a>
         <p class="card-body" style="margin-top:28px;margin-bottom:12px">
           Don't have Trullus yet?
@@ -189,6 +194,11 @@
           </a>
         </div>
       `;
+
+      // Give the page 200ms to paint, then attempt the deep link.
+      // Chrome/Safari: stays on this page if the app isn't installed.
+      // Outlook WebView: may show blank if app isn't installed (WebView limitation).
+      setTimeout(() => { window.location.href = deepLink; }, 200);
     }
 
     function renderNonMobile() {
