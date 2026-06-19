@@ -363,13 +363,27 @@
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtjd250anVwcnFkc2ZxbGlvZWl6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAzNDU3MDEsImV4cCI6MjA5NTkyMTcwMX0.4iGVxZpFGgC7GR35100jwMdEMM8JLM872SoFfKcJMMM';
 
     const CATEGORY_META = {
-      eat:      { label: 'Eat',      icon: '🍽', color: '#C4622D' },
-      cafe_bar: { label: 'Cafe/Bar', icon: '🍷', color: '#D4A853' },
-      explore:  { label: 'Explore',  icon: '🔭', color: '#2D7A4A' },
-      do:       { label: 'Do',       icon: '🏃', color: '#2D4A3E' },
-      stay:     { label: 'Stay',     icon: '🏨', color: '#6B5B8E' },
-      party:    { label: 'Party',    icon: '🎉', color: '#9B3A8C' },
+      eat:      { label: 'Eat',      color: '#C4622D' },
+      cafe_bar: { label: 'Cafe/Bar', color: '#D4A853' },
+      explore:  { label: 'Explore',  color: '#2D7A4A' },
+      do:       { label: 'Do',       color: '#2D4A3E' },
+      stay:     { label: 'Stay',     color: '#6B5B8E' },
+      party:    { label: 'Party',    color: '#9B3A8C' },
     };
+
+    const CATEGORY_SVG = {
+      eat:      `<path d="M7 4v4.5M10 4v4.5" stroke="COLOR" stroke-width="1.75" stroke-linecap="round"/><path d="M7 8.5Q8.5 11 10 8.5" stroke="COLOR" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.5 11v9" stroke="COLOR" stroke-width="1.75" stroke-linecap="round"/><path d="M15 4c2 0 2.5 3 0 5v11" stroke="COLOR" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>`,
+      cafe_bar: `<path d="M7.5 5h9" stroke="COLOR" stroke-width="1.75" stroke-linecap="round"/><path d="M7.5 5Q7.5 14 12 15.5Q16.5 14 16.5 5" stroke="COLOR" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 15.5v3.5" stroke="COLOR" stroke-width="1.75" stroke-linecap="round"/><path d="M9 19h6" stroke="COLOR" stroke-width="1.75" stroke-linecap="round"/>`,
+      explore:  `<path d="M2 20L9 6l4 8 3.5-5.5L22 20H2z" stroke="COLOR" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>`,
+      do:       `<path d="M14 2L7 13h5l-2 9 8-11h-5l2-9z" stroke="COLOR" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>`,
+      stay:     `<path d="M3 12V7c0-1.657 1.343-3 3-3h12c1.657 0 3 1.343 3 3v5" stroke="COLOR" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 12v8M21 12v8" stroke="COLOR" stroke-width="1.75" stroke-linecap="round"/><path d="M3 12h18" stroke="COLOR" stroke-width="1.75" stroke-linecap="round"/><path d="M3 20h18" stroke="COLOR" stroke-width="1.75" stroke-linecap="round"/><rect x="5" y="9.5" width="5" height="2.5" rx="1" stroke="COLOR" stroke-width="1.5"/><rect x="14" y="9.5" width="5" height="2.5" rx="1" stroke="COLOR" stroke-width="1.5"/>`,
+      party:    `<path d="M9 18V7l8-2v11" stroke="COLOR" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><ellipse cx="7" cy="18.5" rx="2.5" ry="2" stroke="COLOR" stroke-width="1.75"/><ellipse cx="15" cy="16.5" rx="2.5" ry="2" stroke="COLOR" stroke-width="1.75"/>`,
+    };
+
+    function categoryIcon(key, color) {
+      const inner = (CATEGORY_SVG[key] || '').replace(/COLOR/g, color);
+      return `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="vertical-align:middle;margin-right:3px">${inner}</svg>`;
+    }
 
     function isMobilePhone() {
       // Match Android phones (has "Mobile" in UA) and iPhones (not iPads, which say "iPad")
@@ -442,7 +456,7 @@
               return `
                 <div class="rec-item">
                   <div class="category-pill" style="${pillStyle}">
-                    ${escapeHtml(meta.icon || '')} ${escapeHtml(meta.label || rec.category).toUpperCase()}
+                    ${categoryIcon(rec.category, meta.color || '#8A8580')} ${escapeHtml(meta.label || rec.category).toUpperCase()}
                   </div>
                   <div class="rec-name">${escapeHtml(rec.place_name)}</div>
                   ${noteHtml}
