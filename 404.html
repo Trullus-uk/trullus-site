@@ -376,21 +376,6 @@
       return /Android.*Mobile|iPhone/.test(navigator.userAgent);
     }
 
-    async function dbGet(table, queryString) {
-      const res = await fetch(
-        `${SUPABASE_URL}/rest/v1/${table}?${queryString}`,
-        {
-          headers: {
-            'apikey': SUPABASE_ANON_KEY,
-            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-            'Accept': 'application/json',
-          },
-        }
-      );
-      if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
-      return res.json();
-    }
-
     function getInitials(firstName, lastName) {
       return ((firstName || '').charAt(0) + (lastName || '').charAt(0)).toUpperCase();
     }
@@ -535,84 +520,29 @@
       const handle = pathParts[0];
 
       // Ignore known site paths that should never reach 404.html
-      if (!handle || ['auth', 'privacy', 'index'].includes(handle)) {
-        renderNotFound();
-        return;
-      }
+      if (!handle || ['auth', 'privacy', 'index'].includes(handle)) { renderNotFound(); return; }
 
       const token = new URLSearchParams(window.location.search).get('token');
-
-      if (!token) {
-        renderNotFound();
-        return;
-      }
+      if (!token) { renderNotFound(); return; }
 
       try {
-        // 1. Validate token
-        const links = await dbGet(
-          'share_links',
-          `token=eq.${encodeURIComponent(token)}&select=created_at,user_id&limit=1`
+        const res = await fetch(
+          `${SUPABASE_URL}/functions/v1/get-shared-profile?token=${encodeURIComponent(token)}`,
+          { headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` } }
         );
 
-        if (!links || links.length === 0) {
-          renderExpired();
-          return;
-        }
+        if (!res.ok) { renderExpired(); return; }
 
-        const link = links[0];
-        const ageHours = (Date.now() - new Date(link.created_at).getTime()) / 3600000;
-        if (ageHours > 24) {
-          renderExpired();
-          return;
-        }
+        const { profile, locations, recsByLocation } = await res.json();
 
-        // 2. Fetch profile by handle
-        const profiles = await dbGet(
-          'profiles',
-          `handle=eq.${encodeURIComponent(handle)}&select=id,first_name,last_name,handle&limit=1`
-        );
+        // Tamper check: token must belong to the handle in the URL
+        if (!profile || profile.handle !== handle) { renderExpired(); return; }
 
-        if (!profiles || profiles.length === 0) {
-          renderNotFound();
-          return;
-        }
-
-        const profile = profiles[0];
-
-        // Verify the token belongs to this profile
-        if (link.user_id !== profile.id) {
-          renderExpired();
-          return;
-        }
-
-        // 3. Attempt deep link on mobile phones before showing content
         if (isMobilePhone()) {
           window.location.href = `trullus://${encodeURIComponent(handle)}`;
         }
 
-        // 4. Fetch locations
-        const locations = await dbGet(
-          'locations',
-          `user_id=eq.${encodeURIComponent(profile.id)}&select=id,city,country,note&order=display_order.asc.nullslast,created_at.desc`
-        );
-
-        const locList = locations || [];
-
-        // 5. Fetch recommendations for all locations
-        let recsByLocation = {};
-        if (locList.length > 0) {
-          const ids = locList.map(l => l.id).join(',');
-          const recs = await dbGet(
-            'recommendations',
-            `location_id=in.(${ids})&select=location_id,place_name,category,note&order=created_at.desc`
-          );
-          for (const rec of (recs || [])) {
-            if (!recsByLocation[rec.location_id]) recsByLocation[rec.location_id] = [];
-            recsByLocation[rec.location_id].push(rec);
-          }
-        }
-
-        renderProfile(profile, locList, recsByLocation);
+        renderProfile(profile, locations, recsByLocation);
 
       } catch (err) {
         console.error('Trullus load error:', err);
