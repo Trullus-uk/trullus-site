@@ -462,7 +462,7 @@
       }).join('');
 
       const locationsSection = locations.length === 0
-        ? `<p style="color:#8A8580;font-style:italic">No locations saved yet.</p>`
+        ? `<p style="color:#8A8580;font-style:italic;text-align:center">${escapeHtml(profile.first_name)} hasn't saved any recommendations yet.</p>`
         : `
           <div class="section-title">Locations</div>
           ${locationCards}
