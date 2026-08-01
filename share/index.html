@@ -31,19 +31,38 @@
       flex: 1;
     }
 
-    /* Header */
+    /* Header — rebuilt as markup rather than an image. It previously rendered
+       og-image.png, which is 1200x1200 square for WhatsApp preview cropping, so at
+       width:100% the banner was as tall as the viewport is wide. The OG meta tag
+       still points at that file; the on-page header no longer depends on it. */
     header {
       display: block;
-      line-height: 0;
       text-align: center;
       background: #2D4A3E;
+      padding: 20px 20px 18px;
     }
-    header img {
+    .brand-mark {
       display: block;
-      width: 100%;
-      max-width: 600px;
-      height: auto;
-      margin: 0 auto;
+      margin: 0 auto 8px;
+    }
+    .brand-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 23px;
+      font-weight: 700;
+      color: #FAF7F2;
+      line-height: 1.1;
+    }
+    .brand-tagline {
+      font-size: 9.5px;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+      color: #C9A46B;
+      margin-top: 5px;
+    }
+    @media (min-width: 600px) {
+      header { padding: 26px 20px 22px; }
+      .brand-name { font-size: 27px; }
+      .brand-tagline { font-size: 10.5px; letter-spacing: 1.6px; }
     }
 
     /* Content container */
@@ -283,7 +302,7 @@
     .sticky-cta-buttons {
       display: flex;
       gap: 10px;
-      justify-content: center;
+      justify-content: flex-start;
       align-items: center;
     }
     .sticky-store-btn {
@@ -319,7 +338,18 @@
 <body>
 
   <header>
-    <img src="https://trullus.uk/og-image.png" alt="Trullus" />
+    <svg class="brand-mark" width="46" height="46" viewBox="0 0 100 100" aria-hidden="true">
+      <polygon points="50,6 96,90 4,90" fill="#243B31"/>
+      <polygon points="50,19 87,84 13,84" fill="#C4622D"/>
+      <path d="M13,84 Q50,69 87,84 Z" fill="#FAF7F2"/>
+      <ellipse cx="36" cy="56" rx="5" ry="7" fill="#1C1C1E"/>
+      <ellipse cx="50" cy="49" rx="5" ry="7" fill="#1C1C1E"/>
+      <ellipse cx="64" cy="56" rx="5" ry="7" fill="#1C1C1E"/>
+      <ellipse cx="43" cy="71" rx="4.6" ry="6.5" fill="#1C1C1E"/>
+      <ellipse cx="57" cy="71" rx="4.6" ry="6.5" fill="#1C1C1E"/>
+    </svg>
+    <div class="brand-name">Trullus</div>
+    <div class="brand-tagline">Your friends' favourite places</div>
   </header>
 
   <main id="app">
@@ -342,7 +372,7 @@
         <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" />
       </a>
     </div>
-    <div style="text-align:center;margin-top:10px;font-size:11px;color:rgba(250,247,242,0.4);">
+    <div style="margin-top:10px;font-size:11px;color:rgba(250,247,242,0.4);">
       <a href="/privacy" style="color:inherit;text-decoration:none;">Privacy Policy</a>
       &nbsp;·&nbsp;
       <a href="/terms" style="color:inherit;text-decoration:none;">Terms of Use</a>

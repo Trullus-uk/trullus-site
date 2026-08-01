@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Join Trullus</title>
+  <meta name="description" content="Save and share the places you love with friends — from your neighbourhood to your next holiday destination." />
+  <meta property="og:title" content="Join me on Trullus" />
+  <meta property="og:description" content="Save and share the places you love with friends" />
+  <meta property="og:image" content="https://trullus.uk/og-image.png?v=2" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="1200" />
+  <meta property="og:url" content="https://trullus.uk/join" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #FAF7F2;
+      color: #1C1C1E;
+      line-height: 1.6;
+      font-size: 16px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header — same markup-based hero as the share page. Deliberately not an
+       image: og-image.png is 1200x1200 square for WhatsApp preview cropping. */
+    header {
+      display: block;
+      text-align: center;
+      background: #2D4A3E;
+      padding: 20px 20px 18px;
+    }
+    .brand-mark { display: block; margin: 0 auto 8px; }
+    .brand-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 23px;
+      font-weight: 700;
+      color: #FAF7F2;
+      line-height: 1.1;
+    }
+    .brand-tagline {
+      font-size: 9.5px;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+      color: #C9A46B;
+      margin-top: 5px;
+    }
+    @media (min-width: 600px) {
+      header { padding: 26px 20px 22px; }
+      .brand-name { font-size: 27px; }
+      .brand-tagline { font-size: 10.5px; letter-spacing: 1.6px; }
+    }
+
+    /* Content container — matches the share page */
+    .content {
+      flex: 1;
+      max-width: 600px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 28px 20px 32px;
+      text-align: center;
+    }
+    @media (min-width: 600px) {
+      .content { padding: 40px 40px 48px; }
+    }
+
+    .headline {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      font-weight: 700;
+      color: #1C1C1E;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+    .lede {
+      font-size: 16px;
+      color: #8A8580;
+      margin-bottom: 28px;
+    }
+
+    /* Steps card — same treatment as the share page's location cards */
+    .steps {
+      background: #FFFFFF;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      padding: 20px 22px;
+      text-align: left;
+      margin-bottom: 8px;
+    }
+    .step {
+      display: flex;
+      gap: 12px;
+      align-items: baseline;
+      margin-bottom: 12px;
+      font-size: 15px;
+      color: #1C1C1E;
+    }
+    .step:last-child { margin-bottom: 0; }
+    .step-num {
+      flex: 0 0 22px;
+      font-family: 'Playfair Display', serif;
+      font-size: 17px;
+      font-weight: 700;
+      color: #C4622D;
+    }
+
+    /* Sticky download CTA — identical to the share page's */
+    .sticky-cta {
+      position: sticky;
+      bottom: 0;
+      background: #2D4A3E;
+      color: #FAF7F2;
+      padding: 16px 20px 20px;
+    }
+    .cta-headline {
+      font-size: 15px;
+      font-weight: 700;
+      color: #FAF7F2;
+      line-height: 1.4;
+      margin-bottom: 4px;
+    }
+    .cta-subtext {
+      font-size: 12px;
+      color: rgba(250,247,242,0.75);
+      line-height: 1.4;
+      margin-bottom: 12px;
+    }
+    .sticky-cta-buttons {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-start;
+      align-items: center;
+    }
+    .cta-legal {
+      margin-top: 10px;
+      font-size: 11px;
+      color: rgba(250,247,242,0.4);
+    }
+    .cta-legal a { color: inherit; text-decoration: none; }
+    .sticky-store-btn {
+      display: inline-block;
+      cursor: default;
+      line-height: 0;
+    }
+    .sticky-store-btn img[alt="Download on the App Store"] {
+      height: 40px;
+      display: block;
+    }
+    .sticky-store-btn img[alt="Get it on Google Play"] {
+      height: 54px;
+      display: block;
+    }
+    @media (min-width: 600px) {
+      .sticky-cta { padding: 16px 24px 20px; }
+      .sticky-cta-buttons { max-width: 360px; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <header>
+    <svg class="brand-mark" width="46" height="46" viewBox="0 0 100 100" aria-hidden="true">
+      <polygon points="50,6 96,90 4,90" fill="#243B31"/>
+      <polygon points="50,19 87,84 13,84" fill="#C4622D"/>
+      <path d="M13,84 Q50,69 87,84 Z" fill="#FAF7F2"/>
+      <ellipse cx="36" cy="56" rx="5" ry="7" fill="#1C1C1E"/>
+      <ellipse cx="50" cy="49" rx="5" ry="7" fill="#1C1C1E"/>
+      <ellipse cx="64" cy="56" rx="5" ry="7" fill="#1C1C1E"/>
+      <ellipse cx="43" cy="71" rx="4.6" ry="6.5" fill="#1C1C1E"/>
+      <ellipse cx="57" cy="71" rx="4.6" ry="6.5" fill="#1C1C1E"/>
+    </svg>
+    <div class="brand-name">Trullus</div>
+    <div class="brand-tagline">Your friends' favourite places</div>
+  </header>
+
+  <main class="content">
+    <h1 class="headline">Save and share the places you love</h1>
+    <p class="lede">Trullus keeps your friends' recommendations in one place — from your neighbourhood to your next holiday destination.</p>
+
+    <div class="steps">
+      <div class="step"><span class="step-num">1</span><span>Download the app.</span></div>
+      <div class="step"><span class="step-num">2</span><span>Sign up with your email address.</span></div>
+      <div class="step"><span class="step-num">3</span><span>Search for the friend who invited you, and add them.</span></div>
+    </div>
+  </main>
+
+  <div class="sticky-cta">
+    <p class="cta-headline">Join Trullus for free to connect with friends and share recommendations!</p>
+    <p class="cta-subtext">Trullus is available on iOS and Android.</p>
+    <div class="sticky-cta-buttons">
+      <!-- TODO: Replace href with real App Store URL before public release -->
+      <a class="sticky-store-btn" onclick="return false">
+        <img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83" alt="Download on the App Store" />
+      </a>
+      <!-- TODO: Replace href with real Google Play URL before public release -->
+      <a class="sticky-store-btn" onclick="return false">
+        <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" />
+      </a>
+    </div>
+    <div class="cta-legal">
+      <a href="/privacy">Privacy Policy</a>
+      &nbsp;·&nbsp;
+      <a href="/terms">Terms of Use</a>
+    </div>
+  </div>
+
+</body>
+</html>
