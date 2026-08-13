@@ -23,7 +23,8 @@
       font-size: 16px;
       line-height: 1.65;
       min-height: 100vh;
-      padding-bottom: 200px;
+      /* Fallback only — syncCtaSpacing() measures the real CTA height at runtime. */
+      padding-bottom: 260px;
       display: flex;
       flex-direction: column;
     }
@@ -465,6 +466,7 @@
       // nothing useful to tell an existing user to search for.
       document.getElementById('cta-installed').style.display = 'none';
       document.getElementById('sticky-cta').style.display = 'block';
+      syncCtaSpacing();
     }
 
     function renderProfile(profile, locations, recsByLocation) {
@@ -551,7 +553,7 @@
 
       // Update and show sticky CTA
       document.getElementById('cta-headline').textContent =
-        `Join Trullus for free and connect with ${profile.first_name} to see all their recommendations!`;
+        `Join Trullus for free to see ${profile.first_name}'s recommendations in full and connect with other friends!`;
       document.getElementById('cta-subtext').textContent =
         `Trullus is available on iOS and Android. This link expires in 24 hours.`;
 
@@ -561,7 +563,19 @@
       installed.style.display = 'block';
 
       document.getElementById('sticky-cta').style.display = 'block';
+      syncCtaSpacing();
     }
+
+    // The sticky CTA's height varies with how the headline wraps, which depends on
+    // the profile's first name and the viewport width. Measure it rather than
+    // guessing a padding value, or the last card sits underneath it on mobile.
+    function syncCtaSpacing() {
+      const cta = document.getElementById('sticky-cta');
+      if (!cta || cta.style.display === 'none') return;
+      document.body.style.paddingBottom = (cta.offsetHeight + 24) + 'px';
+    }
+
+    window.addEventListener('resize', syncCtaSpacing);
 
     function toggleLocation(card) {
       card.classList.toggle('open');
