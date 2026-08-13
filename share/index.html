@@ -23,7 +23,7 @@
       font-size: 16px;
       line-height: 1.65;
       min-height: 100vh;
-      padding-bottom: 160px;
+      padding-bottom: 200px;
       display: flex;
       flex-direction: column;
     }
@@ -299,6 +299,14 @@
       line-height: 1.4;
       margin-bottom: 12px;
     }
+    .cta-installed {
+      font-size: 12px;
+      color: rgba(250,247,242,0.85);
+      line-height: 1.4;
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(250,247,242,0.15);
+    }
     .sticky-cta-buttons {
       display: flex;
       gap: 10px;
@@ -372,6 +380,10 @@
         <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" />
       </a>
     </div>
+    <!-- Shown only on a loaded profile, where we have a handle to point at.
+         Hotfix 4.3: the page no longer deep-links into the app, so a visitor who
+         already has Trullus installed needs a route other than the store badges. -->
+    <p class="cta-installed" id="cta-installed" style="display:none"></p>
     <div style="margin-top:10px;font-size:11px;color:rgba(250,247,242,0.4);">
       <a href="/privacy" style="color:inherit;text-decoration:none;">Privacy Policy</a>
       &nbsp;·&nbsp;
@@ -406,11 +418,6 @@
     function categoryIcon(key, color) {
       const inner = (CATEGORY_SVG[key] || '').replace(/COLOR/g, color);
       return `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="vertical-align:middle;margin-right:3px">${inner}</svg>`;
-    }
-
-    function isMobilePhone() {
-      // Match Android phones (has "Mobile" in UA) and iPhones (not iPads, which say "iPad")
-      return /Android.*Mobile|iPhone/.test(navigator.userAgent);
     }
 
     function getInitials(firstName, lastName) {
@@ -454,6 +461,9 @@
         'Join Trullus for free to connect with friends and share recommendations!';
       document.getElementById('cta-subtext').textContent =
         'Trullus is available on iOS and Android. This link expires in 24 hours.';
+      // No handle is available in the expired/not-found states, so there is
+      // nothing useful to tell an existing user to search for.
+      document.getElementById('cta-installed').style.display = 'none';
       document.getElementById('sticky-cta').style.display = 'block';
     }
 
@@ -541,9 +551,15 @@
 
       // Update and show sticky CTA
       document.getElementById('cta-headline').textContent =
-        `Join Trullus for free to see ${profile.first_name}'s recommendations in full and connect with other friends!`;
+        `Join Trullus for free and connect with ${profile.first_name} to see all their recommendations!`;
       document.getElementById('cta-subtext').textContent =
         `Trullus is available on iOS and Android. This link expires in 24 hours.`;
+
+      const installed = document.getElementById('cta-installed');
+      installed.textContent =
+        `Already have Trullus? Open the app and search for @${profile.handle} to send ${profile.first_name} a friend request.`;
+      installed.style.display = 'block';
+
       document.getElementById('sticky-cta').style.display = 'block';
     }
 
@@ -573,9 +589,12 @@
         // Tamper check: token must belong to the handle in the URL
         if (!profile || profile.handle !== handle) { renderExpired(); return; }
 
-        if (isMobilePhone()) {
-          window.location.href = `trullus://${encodeURIComponent(handle)}`;
-        }
+        // Hotfix 4.3: the deep link into the app has been removed deliberately.
+        // It previously redirected phones to trullus://<handle>, which landed an
+        // authenticated non-friend on an in-app profile showing an empty list —
+        // the friend-gated RLS on places returns no rows for them. Share links now
+        // always stay on the web page, which is served by get-shared-profile with
+        // the service-role key and is not friend-gated.
 
         renderProfile(profile, locations, recsByLocation);
 
